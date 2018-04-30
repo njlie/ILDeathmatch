@@ -19,6 +19,7 @@
     "ejs": "~2.5.5",
     "execSync": "~1.0.1-pre",
     "express": "~3.3.5",
+    "node-fetch": "^2.1.2",
     "optimist": "~0.6.0",
     "quakejs-files": "0.0.3",
     "send": "~0.11.1",
