@@ -47,8 +47,21 @@ vstr d1
 Replace the fields containing `CHANGE_ME` with whatever you wish, as well as modifying any other settings you wish to change.
 A good reference can be found at [Quake 3 World](https://www.quake3world.com/q3guide/servers.html).
 
+Finally, create a file called `config.json` with a single field:
+
+```
+{
+  "baseUrl": "localhost:8080"
+}
+```
+You can point this to another port if ILDeathmatch-Server is listening on one other than 8080. It only accepts requests from `localhost` for security reasons.
+
 Now your server can be run with the following command:
 ```
-node build/ioq3ded.js +set fs_game baseq3 +set dedicated 2 +exec server.cfg
+node index.js
 ```
+
+This spawns the Quake server as a child process of a parent Node.js process that captures server console output and makes API calls to ILDeathmatch-Server as necessary.
+
+
 If you did everything right, you should be able to connect to the Quake server using the ILDeathmatch Server on localhost at http://localhost:8080/play?connect%20localhost:27960. Note that Quake servers always listen on port 27960, but you can replace localhost with whatever IP you are using to host the server.
