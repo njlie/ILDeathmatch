@@ -1,12 +1,14 @@
 const { spawn } = require('child_process')
 const fetch = require('node-fetch')
+const config = require('./config.json')
 var StreamSplitter = require('stream-splitter')
 const WebSocket = require('ws')
 const quake = spawn('node', ['build/ioq3ded.js', '+set', 'fs_game', 'baseq3', '+set', 'dedicated', '2', '+exec', 'server.cfg'])
 var cmdArray = []
 var prevToken = ''
+var playerList = {}
 
-const ws = new WebSocket('ws://localhost:8080/server')
+const ws = new WebSocket(`ws://${config.baseUrl}/server`)
 
 ws.on('open', function open() {
   ws.send('server ws connected.')
@@ -25,15 +27,15 @@ test.on('token', token => {
     const client = token.split(':').map(e => e.trim())[1]
     const dumpuser = 'dumpuser ' + client + '\n'
     cmdArray.push({ name: 'ip', index: client })
-    // cmdArray.push({ name: 'connect' })
     quake.stdin.write(dumpuser)
   }
 
   if (token.includes('ClientDisconnect:')) {
     const client = token.split(':').map(e => e.trim())[1]
     const dumpuser = 'dumpuser ' + client + '\n'
-    // cmdArray.push('disconnect')
-    quake.stdin.write(dumpuser)
+    console.log('Disconnected: ', playerList[client])
+    fetch(`http://${config.baseUrl}/game/disconnect/` + playerList[client])
+    delete playerList[client]
   }
 
   if (token.includes('Kill:')) {
@@ -56,27 +58,29 @@ test.on('token', token => {
     console.log('ACTION: ', action)
     if (action.name === 'ip') {
       console.log('Got IP: ', ip)
-      fetch('http://localhost:8080/game/spawn/' + ip).then(res => {
+      playerList[action.index] = ip
+      fetch(`http://${config.baseUrl}/game/spawn/` + ip).then(res => {
+        console.log(res.body)
         console.log(res.status)
         if (res.status !== 200) {
-          console.log('kick player for having no balance')
+          console.log('kick player for having no balance/pointer')
           const kickPlayer = 'kick ' + action.index + '\n'
           quake.stdin.write(kickPlayer)
         }
       })
     } else if (action.name === 'killer') {
       console.log('Kill by ', ip)
-      fetch('http://localhost:8080/game/kill/' + ip).then(res => {
+      fetch(`http://${config.baseUrl}/game/kill/` + ip).then(res => {
         console.log(res.status)
         console.log(res)
       })
     } else if (action.name === 'killed') {
       console.log('Was killed: ', ip)
-      fetch('http://localhost:8080/game/killed/' + ip).then(res => {
+      fetch(`http://${config.baseUrl}/game/killed/` + ip).then(res => {
         console.log(res.status)
         console.log(res)
         if (res.status !== 200) {
-          console.log('kick player for having no balance')
+          console.log('kick player for having no balance/pointer')
           const kickPlayer = 'kick ' + action.index + '\n'
           quake.stdin.write(kickPlayer)
         }
