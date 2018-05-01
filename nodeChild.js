@@ -43,7 +43,7 @@ test.on('token', token => {
     const killer = players[1]
     const killed = players[2]
     console.log(`Player ${killer} killed Player ${killed}`)
-    cmdArray.push({ name: 'killer' })
+    if (killer !== 1022) cmdArray.push({ name: 'killer' })
     cmdArray.push({ name: 'killed', index: killed })
     const dumpKiller = 'dumpuser ' + killer + '\n'
     const dumpKilled = 'dumpuser ' + killed + '\n'
