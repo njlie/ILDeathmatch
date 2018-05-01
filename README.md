@@ -1,23 +1,20 @@
 # ILDeathmatch
 
-ILDeathmatch is a version of Quake III Arena that has been retrofitted with [Web Monetization](https://interledger.org/rfcs/0028-web-monetization/) in order to allow players to receive money in the form of XRP.
-
-ILDeathmatch changes basic Quake III gameplay in two ways: 
+ILDeathmatch is a version of Quake III Arena that has been retrofitted with [Web Monetization](https://interledger.org/rfcs/0028-web-monetization/) in order to allow players to receive money in the form of XRP. ILDeathmatch changes basic Quake III gameplay in two ways: 
 - Spawning requires payment.
 - Each kill pays the player that made said kill.
 
 With Web Monetization, ILDeathmatch is able to compensate each kill in real time.
-
 ILDeathmatch uses the binary from [inolen/quakejs](https://github.com/inolen/quakejs) with middleware from the [dm-web-monetization module](https://github.com/njlie/dm-web-monetization) for payments.
 
 ## Running ILDeathmatch
 
-### On the server side:
+This tutorial is based on the one found at [inolen/quakejs](https://github.com/inolen/quakejs#baseq3-server-step-by-step).
 
-#### Prerequisites
+### Prerequisites
 
 - A Quake III Arena server running the baseq3 gamemode (This repository)
-- A Web Monetization Server to manage payments between the server and its clients [ILDeathmatch-Server](https://github.com/njlie/ILDeathmatch-Server)
+- A Web Monetization Server to manage payments between the server and its clients ([ILDeathmatch-Server](https://github.com/njlie/ILDeathmatch-Server))
 
 First, make sure you are running an instance of [ILDeathmatch-Server](https://github.com/njlie/ILDeathmatch-Server). ILDeathmatch will make API calls to this server to issue charges and payments.
 
