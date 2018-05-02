@@ -10,7 +10,7 @@ var playerList = {}
 
 const ws = new WebSocket(`ws://${config.baseUrl}/server`)
 
-ws.on('open', function open() {
+ws.on('open', function open () {
   ws.send('server ws connected.')
 })
 
@@ -32,7 +32,6 @@ test.on('token', token => {
 
   if (token.includes('ClientDisconnect:')) {
     const client = token.split(':').map(e => e.trim())[1]
-    const dumpuser = 'dumpuser ' + client + '\n'
     console.log('Disconnected: ', playerList[client])
     fetch(`http://${config.baseUrl}/game/disconnect/` + playerList[client])
     delete playerList[client]
