@@ -5,7 +5,6 @@ var StreamSplitter = require('stream-splitter')
 const WebSocket = require('ws')
 const jwt = require('jsonwebtoken')
 const quake = spawn('node', ['build/ioq3ded.js', '+set', 'fs_game', 'baseq3', '+set', 'dedicated', '1', '+exec', 'server.cfg'])
-var cmdArray = []
 var playerList = {}
 
 const ws = new WebSocket(`ws://${config.baseUrl}/server`)
@@ -61,7 +60,6 @@ quakeErr.on('token', token => {
 
   if (token.includes('ClientBegin:')) {
     const client = token.split(':').map(e => e.trim())[1]
-    const dumpuser = 'dumpuser ' + client + '\n'
     const telluser = 'tell ' + client + ' --ILDM_CONNECT ' + client + '\n'
     playerList[client] = 'await'
     quake.stdin.write(telluser)
