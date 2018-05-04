@@ -22,7 +22,7 @@ Next, execute the following commands in the root directory:
 
 ```
 npm install
-node build/ioq3ded.js +set fs_game baseq3 +set dedicated 2
+node build/ioq3ded.js +set fs_game baseq3 +set dedicated 1
 ```
 
 At this point, you should see an EULA for Quake III appear in the terminal. Keep pressing Enter until you have read through the EULA, then answer the `Agree? (y/n)` prompt. Then the base game files will download. Once this finishes, press Ctrl+C to quit the server.
@@ -51,10 +51,11 @@ Finally, create a file called `config.json` with a single field:
 
 ```
 {
-  "baseUrl": "localhost:8080"
+  "baseUrl": "localhost:8080",
+  "secret": "YOUR_OWN_SECRET"
 }
 ```
-You can point this to another port if ILDeathmatch-Server is listening on one other than 8080. It only accepts requests from `localhost` for security reasons.
+You can point `baseUrl` to another port if ILDeathmatch-Server is listening on one other than 8080. `secret` is a secret string that is used to sign a JSON Web Token that is passed between `ILDeathmatch` and `ILDeathmatch-Server`. This prevents anyone from the outside attempting to call your monetized APIs. **Make sure that this secret is the same as the one you specify in `config.json` for `ILDeathmatch-Server`.**
 
 Now your server can be run with the following command:
 ```
