@@ -1,4 +1,6 @@
-.
+
+base/
 assets/
 assets_src/
 node_modules/
+config.json
